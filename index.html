@@ -26,13 +26,43 @@
 
     <div class="displayTitle">Hmm... Nothing read yet</div>
 
-    <button class="addbtn"><i class="fas fa-book-open"></i>
+    <button class="addbtn" id="addbutton"><i class="fas fa-book-open"></i>
+    Add Book</button>
+    <div id="myModal" class="modal">
 
-        Add Book</button>
+        <!-- Modal content -->
+        <div class="modal-content">
+          <span class="close">&times;</span>
+          <p><form>
+              <label for="title">Title</label>
+              <input type="text" id="title"><br>
+
+            <label for="author">Author</label>
+            <input type="text" id="author"><br>
+
+            <label for="pages">Pages</label>
+            <input type="text" id="pages"><br>
+
+            <input type="checkbox" id="checkbox" name="yes" value="yes">
+            <label for="yes"> Yes</label><br>
+
+            <button class ="bookSubmit" type="button">Add</button>
+
+           
+          </form></p>
+        </div>
+      
+      </div>
 
         
         <div class="afterfunctionbox">
-            <div class="bookcard"></div>
+            <div class="bookcard">
+               <!--  <p class="title0">Title</p>
+                <p class="author0">Author</p>
+                <p class="pages0">Pages</p>
+                <p class="read0">Read</p>
+                <button type="button" class="removebtn"><i class="fas fa-trash"></i></button> -->
+            </div>
         </div>
 
 </div>
