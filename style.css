@@ -73,13 +73,13 @@
     margin-top:30px;
     width:800px;
     height:700px;
-    grid-row: 1/ span 20;
-    z-index: 0;
+    grid-row: 1/ span 15;
+    z-index: 6;
     background-color: rgba(168, 65, 236, 0.308);
     border: 3px teal solid;
     border-radius: 40px;
     grid-column: 7/span 20;
-    display:flex;
+    display:none;
     flex-wrap:wrap;
 }
 
@@ -93,7 +93,6 @@
     border:2px solid black;
     color:white;
     padding:5px;
-    flex-wrap: wrap;
     display: none;
 }
 

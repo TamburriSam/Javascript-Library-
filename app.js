@@ -11,17 +11,26 @@ let contentBox = document.querySelector('.afterfunctionbox');
 
 
 
+
+
+//NOTES FOR TOMORROW READ ME READ ME READ ME
+//FOR THE PAGES TOGGLE MAYBE ADD AN UP AND DOWN ARROW EVENT LISTENER 
+//PAGES++ PAGES-- 
+
+
+
 let myLibrary = [];
 
 function Book(title,author,pages,read){
     this.title = title;
     this.author = author;
     this.pages = pages;
-    this.read = read;
-    this.info = function(){
-      console.log(`${this.title} by ${this.author}, ${this.pages}, ${this.read}`)
-    }    
+    this.read = read;    
 }
+
+Book.prototype.info = function(){
+    return `${this.title} by ${this.author}, ${this.pages}, ${this.read}`
+};
 
 function addBookToLibrary(title, author, pages, read){
     title = document.getElementById('title').value;
@@ -34,26 +43,53 @@ function addBookToLibrary(title, author, pages, read){
 }
 
 
-function displayBook(){
-    
 
+function displayBook(){
+
+
+        contentBox.style.display="flex";
         let div1 = document.createElement('div');
-        contentBox.style.display="inline-block";
+        
         div1.classList.add('bookcard');
         div1.style.display = "block"
 
-     
-
-       
-        div1.innerHTML = `Title: ${myLibrary[myLibrary.length-1].title}  Author: ${myLibrary[myLibrary.length-1].author} 
-        Pages: ${myLibrary[myLibrary.length-1].pages} 
-        Read: ${myLibrary[myLibrary.length-1].read}`;  
+        for(let i = 0; i<myLibrary.length;i++){
+          div1.innerHTML = `${myLibrary[i].title} <br> ${myLibrary[i].author} <br> ${myLibrary[i].pages} <br> ${myLibrary[i].read}`
+        }
+    
+       let btn = document.createElement('button');
+       btn.innerHTML ='<i class="fas fa-trash">'
+       div1.appendChild(btn);
         
         
 
         bookCardDisplay.appendChild(div1);
 
+       //REMOVE BOOK
+        let removeIndex = '';
+        let splitWord = ''
+        let doneWord = ''
+        btn.addEventListener('click', function(){
+          for(let i = 0; i < myLibrary.length; i++){
+            splitWord = div1.textContent.split(' ');
+            doneWord = splitWord[0];
+
+            
+
+            div1.style.display="none";
+
+             removeIndex = myLibrary.map(function(item){return item.title}).indexOf(doneWord.toString())
+
+          }
+          myLibrary.splice(removeIndex, 1)
+          console.log(div1, doneWord, removeIndex)
+        })
+
+        
+
 }
+
+
 
 bookSubmit.addEventListener('click', function(e){
  
