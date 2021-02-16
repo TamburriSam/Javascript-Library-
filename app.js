@@ -89,7 +89,7 @@ function displayBook(){
                 completed.style.display ="none";
              }  
 
-             localStorage.setItem(`${myLibrary[i].title} ${myLibrary[i].author} ${myLibrary[i].pages}`, `${myLibrary[i].read}`)
+             /* localStorage.setItem(`${myLibrary[i].title} ${myLibrary[i].author} ${myLibrary[i].pages}`, `${myLibrary[i].read}`) */
         } 
     
        let btn = document.createElement('button');
