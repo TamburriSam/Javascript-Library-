@@ -16,6 +16,7 @@ let contentBox = document.querySelector('.afterfunctionbox');
 //NOTES FOR TOMORROW READ ME READ ME READ ME
 //FOR THE PAGES TOGGLE MAYBE ADD AN UP AND DOWN ARROW EVENT LISTENER 
 //PAGES++ PAGES-- 
+//NO. READ MORE ABOUT GETATTRIBUTE/DATASET. DATA HTML JS DOM. 
 
 
 
@@ -32,6 +33,23 @@ Book.prototype.info = function(){
     return `${this.title} by ${this.author}, ${this.pages}, ${this.read}`
 };
 
+Book.prototype.readToggle = function(){
+  let findIndex = '';
+  let splitWord = ''
+  let doneWord = ''
+
+  
+    for(let i = 0; i < myLibrary.length; i++){
+      splitWord = this.textContent.split(' ');
+      doneWord = splitWord[0];
+
+      findIndex = myLibrary.map(function(item){return item.title}).indexOf(doneWord.toString())
+
+    }
+   return findIndex
+}
+
+
 function addBookToLibrary(title, author, pages, read){
     title = document.getElementById('title').value;
     author = document.getElementById('author').value;
@@ -45,7 +63,7 @@ function addBookToLibrary(title, author, pages, read){
 
 
 function displayBook(){
-
+    let completed = '';
 
         contentBox.style.display="flex";
         let div1 = document.createElement('div');
@@ -53,12 +71,26 @@ function displayBook(){
         div1.classList.add('bookcard');
         div1.style.display = "block"
 
-        for(let i = 0; i<myLibrary.length;i++){
-          div1.innerHTML = `${myLibrary[i].title} <br> ${myLibrary[i].author} <br> ${myLibrary[i].pages} <br> ${myLibrary[i].read}`
-        }
+         for(let i = 0; i<myLibrary.length;i++){
+          div1.innerHTML = `Title: ${myLibrary[i].title} <br>
+           Author: ${myLibrary[i].author} <br>
+            Total Pages: ${myLibrary[i].pages} <br>`
+
+              if(myLibrary[i].read === true){
+                completed = document.createElement('button');
+                completed.innerHTML = "COMPLETED";
+                completed.style.color ="green";
+                div1.appendChild(completed);
+             } else if (myLibrary[i].read === false) {
+                completed = document.createElement('button');
+                completed.innerHTML = "INCOMPLETE";
+                completed.style.display ="none";
+             }  
+        } 
     
        let btn = document.createElement('button');
-       btn.innerHTML ='<i class="fas fa-trash">'
+       btn.innerHTML ='Scrap? <i class="fas fa-trash">';
+       btn.style.marginTop = '23px'
        div1.appendChild(btn);
         
         
@@ -72,7 +104,7 @@ function displayBook(){
         btn.addEventListener('click', function(){
           for(let i = 0; i < myLibrary.length; i++){
             splitWord = div1.textContent.split(' ');
-            doneWord = splitWord[0];
+            doneWord = splitWord[1];
 
             
 
@@ -85,7 +117,37 @@ function displayBook(){
           console.log(div1, doneWord, removeIndex)
         })
 
+    //read toggle
+     let toggler = document.createElement('button');
+    toggler.innerHTML = 'Finished ? <i class="fas fa-check-square"></i>';
+    div1.appendChild(toggler); 
+
         
+
+
+
+
+
+    toggler.addEventListener('click', function(){
+      for(let i = 0; i < myLibrary.length; i++){
+        splitWord = div1.textContent.split(' ');
+        doneWord = splitWord[1];
+
+         findIndex = myLibrary.map(function(item){return item.title}).indexOf(doneWord.toString())
+
+      }
+      if(myLibrary[findIndex].read === false){
+        toggler.style.color="green";
+        toggler.innerHTML = "Completed";
+        myLibrary[findIndex].read = true;
+        
+      }else if (myLibrary[findIndex].read === true) {
+        toggler.style.color="red";
+        toggler.innerHTML = "Not Finished"
+        myLibrary[findIndex].read = false;
+      }
+      console.log(myLibrary[findIndex].read, this)
+    })
 
 }
 
