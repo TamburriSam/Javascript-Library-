@@ -130,13 +130,16 @@ function displayBook(){
 
     toggler.addEventListener('click', function(){
       for(let i = 0; i <= myLibrary.length; i++){
-        splitWord = div1.textContent.split(' ');
-        doneWord = splitWord[1];
+         splitWord = div1.textContent.split(' ');
+         doneWord = splitWord[1]+splitWord[2]; 
 
-         findIndex = myLibrary.map(function(item){return item.title[0,1,2,3,4]}).indexOf(doneWord[0,1,2,3,4])
+        if(splitWord[1].length >=3){
+         findIndex = myLibrary.map(function(item){return item.title[0,1,2,3]}).indexOf(doneWord[0,1,2,3])
+        } else if (splitWord[1].length <= 2){
+          findIndex = myLibrary.map(function(item){return item.title[0,1]}).indexOf(doneWord[0,1])
+        }
 
-         //findIndex = myLibrary.findIndex(title=> title.includes(doneword))
-
+        
       }
       if(myLibrary[findIndex].read === false){
         toggler.style.color="green";
@@ -148,7 +151,7 @@ function displayBook(){
         toggler.innerHTML = "Not Finished"
         myLibrary[findIndex].read = false;
       }
-      console.log(myLibrary[findIndex].read, findIndex, splitWord)
+      console.log(myLibrary[findIndex].read, findIndex, splitWord, doneWord)
     })
 
 }
