@@ -119,7 +119,7 @@ function displayBook(){
 
     //read toggle
      let toggler = document.createElement('button');
-    toggler.innerHTML = 'Finished ? <i class="fas fa-check-square"></i>';
+    toggler.innerHTML = 'Toggle Read Status <i class="fas fa-check-square"></i>';
     div1.appendChild(toggler); 
 
         
@@ -129,11 +129,13 @@ function displayBook(){
 
 
     toggler.addEventListener('click', function(){
-      for(let i = 0; i < myLibrary.length; i++){
+      for(let i = 0; i <= myLibrary.length; i++){
         splitWord = div1.textContent.split(' ');
         doneWord = splitWord[1];
 
-         findIndex = myLibrary.map(function(item){return item.title}).indexOf(doneWord.toString())
+         findIndex = myLibrary.map(function(item){return item.title[0,1,2,3,4]}).indexOf(doneWord[0,1,2,3,4])
+
+         //findIndex = myLibrary.findIndex(title=> title.includes(doneword))
 
       }
       if(myLibrary[findIndex].read === false){
@@ -146,7 +148,7 @@ function displayBook(){
         toggler.innerHTML = "Not Finished"
         myLibrary[findIndex].read = false;
       }
-      console.log(myLibrary[findIndex].read, this)
+      console.log(myLibrary[findIndex].read, findIndex, splitWord)
     })
 
 }
@@ -193,4 +195,3 @@ window.onclick = function(event) {
     modal.style.display = "none";
   }
 }
-
