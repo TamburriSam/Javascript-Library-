@@ -8,7 +8,9 @@ let bookSubmit = document.querySelector('.bookSubmit');
 let bookIcon = document.querySelector('.book');
 let removeBtn = document.querySelector('.removebutton');
 let contentBox = document.querySelector('.afterfunctionbox');
-
+let totalBox = document.querySelector('.totalBox');
+let totalHeading = document.querySelector('.totalbooks');
+let bookForm = document.querySelector('.bookform');
 
 
 
@@ -86,6 +88,8 @@ function displayBook(){
                 completed.innerHTML = "INCOMPLETE";
                 completed.style.display ="none";
              }  
+
+             localStorage.setItem(`${myLibrary[i].title} ${myLibrary[i].author} ${myLibrary[i].pages}`, `${myLibrary[i].read}`)
         } 
     
        let btn = document.createElement('button');
@@ -113,7 +117,10 @@ function displayBook(){
              removeIndex = myLibrary.map(function(item){return item.title}).indexOf(doneWord.toString())
 
           }
-          myLibrary.splice(removeIndex, 1)
+          myLibrary.splice(removeIndex, 1);
+          totalHeading.style.display="block";
+          totalBox.style.display="block";
+          totalBox.innerHTML = myLibrary.length;
           console.log(div1, doneWord, removeIndex)
         })
 
@@ -133,11 +140,13 @@ function displayBook(){
          splitWord = div1.textContent.split(' ');
          doneWord = splitWord[1]+splitWord[2]; 
 
-        if(splitWord[1].length >=3){
+        if(splitWord[1].length >3){
          findIndex = myLibrary.map(function(item){return item.title[0,1,2,3]}).indexOf(doneWord[0,1,2,3])
         } else if (splitWord[1].length <= 2){
           findIndex = myLibrary.map(function(item){return item.title[0,1]}).indexOf(doneWord[0,1])
-        }
+        } else {
+          findIndex = myLibrary.map(function(item){return item.title[0]}).indexOf(doneWord[0])
+        };
 
         
       }
@@ -150,6 +159,7 @@ function displayBook(){
         toggler.style.color="red";
         toggler.innerHTML = "Not Finished"
         myLibrary[findIndex].read = false;
+        completed.style.display="none";
       }
       console.log(myLibrary[findIndex].read, findIndex, splitWord, doneWord)
     })
@@ -168,11 +178,16 @@ bookSubmit.addEventListener('click', function(e){
   bookIcon.style.gridColumn = '3';
   addBookBtn.style.gridColumn = '3'
 
+  totalBox.style.display ="block";
+  totalHeading.style.display="block";
+  totalBox.innerHTML = myLibrary.length;
+  bookForm.reset();
+
 })
 
 
 
-
+//totalBox.innerHTML = myLibrary.length;
 
 
 //MODAL
