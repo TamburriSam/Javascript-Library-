@@ -13,7 +13,51 @@ let bookForm = document.querySelector('.bookform');
 let totalReadHeading = document.querySelector('.readbooks');
 let totalReadHeadingBox = document.querySelector('.totalreadbox');
 
+
 let myLibrary = [];
+
+if(localStorage.getItem('book') === null){
+  myLibrary = [];
+}else {
+  myLibrary.push(JSON.parse(localStorage.getItem('book')));
+} 
+
+window.onload = function(){
+if(myLibrary.length !== 0){
+
+  bookIcon.style.gridColumn = '3';
+  addBookBtn.style.gridColumn = '3'
+
+  totalBox.style.display ="block";
+  totalHeading.style.display="block";
+  totalBox.innerHTML = myLibrary.length;
+
+  totalReadHeading.style.display = "block";
+  totalReadHeadingBox.style.display = "block";
+
+  contentBox.style.display="flex";
+  let div1 = document.createElement('div');
+  
+  div1.classList.add('bookcard');
+  div1.style.display = "block";
+
+  
+
+  myLibrary.forEach(function (book){ 
+  let div1 = document.createElement('div')
+  
+  div1.classList.add('bookcard');
+  div1.style.display = "block";
+  bookCardDisplay.appendChild(div1);
+  div1.innerHTML = book.title;
+ 
+  
+  
+})
+}}
+
+
+//window.onload = console.log('hey')
 
 function Book(title,author,pages,read){
     this.title = title;
@@ -47,7 +91,10 @@ function displayBook(){
         let div1 = document.createElement('div');
         
         div1.classList.add('bookcard');
-        div1.style.display = "block"
+        div1.style.display = "block";
+
+      
+
 
          for(let i = 0; i<myLibrary.length;i++){
           if(myLibrary[i].read === true){
@@ -64,6 +111,10 @@ function displayBook(){
 
             div1.innerHTML = title + author + pages + read;
 
+            //set local storage
+            window.localStorage.setItem(`book${i}`, JSON.stringify(myLibrary[i]));
+
+
               if(myLibrary[i].read === 'yes'){
                 completed = document.createElement('button');
                 completed.innerHTML = "COMPLETED";
@@ -71,8 +122,6 @@ function displayBook(){
                 completed.style.color ="green";
                 div1.appendChild(completed);
              }
-
-             /* localStorage.setItem(`${myLibrary[i].title} ${myLibrary[i].author} ${myLibrary[i].pages}`, `${myLibrary[i].read}`) */
         } 
     
        let btn = document.createElement('button');
@@ -124,15 +173,13 @@ function displayBook(){
     toggler.addEventListener('click', function(){
       for(let i = 0; i <= myLibrary.length; i++){
          splitWord = div1.textContent.split(' ');
-         doneWord = splitWord[1]+splitWord[2]; 
+         doneWord =   splitWord[1]+splitWord[2]; 
 
-        if(splitWord[1].length >3){
-         findIndex = myLibrary.map(function(item){return item.title[0,1,2,3]}).indexOf(doneWord[0,1,2,3])
-        } else if (splitWord[1].length <= 2){
-          findIndex = myLibrary.map(function(item){return item.title[0,1]}).indexOf(doneWord[0,1])
-        } else {
-          findIndex = myLibrary.map(function(item){return item.title[0]}).indexOf(doneWord[0])
-        };
+     
+          findIndex = myLibrary.map(function(item){
+          joke = item.title.split(' ');
+           return joke[0]}).indexOf(splitWord[1]) 
+ 
 
         
       }
@@ -151,7 +198,7 @@ function displayBook(){
         toggler.style.color="red";
         toggler.innerHTML = "Not Read"
         myLibrary[findIndex].read = 'no';
-        completed.style.display="none";
+        //completed.style.display="none";
         div1.innerHTML = `Title: ${myLibrary[findIndex].title} <br>
                           Author: ${myLibrary[findIndex].author} <br>
                           Pages : ${myLibrary[findIndex].pages} <br>`
@@ -167,6 +214,15 @@ function displayBook(){
 totalReadHeadingBox.innerHTML = 0;
 
 bookSubmit.addEventListener('click', function(e){
+  //if mylibrary has something in it, display that
+
+   /* for(i = 0; i <= myLibrary.length; i++){
+  if(myLibrary.length === 0){
+    myLibrary;
+  } else {
+    displayBook(myLibrary[i])
+  }  
+}  */
  
   addBookToLibrary();
   displayBook();
@@ -192,8 +248,20 @@ for(let i = 0 ; i < myLibrary.length; i++){
 }
   bookForm.reset();
 
+ 
+
+
 })
 
+
+//push local storage into myLibrary array
+for(let i = 0; i <= myLibrary.length; i++){
+  if(localStorage.getItem(`book${i}`) === null){
+   myLibrary;
+ }else {
+   myLibrary.push(JSON.parse(localStorage.getItem(`book${i}`)));
+ }   
+}
 
 
 
@@ -207,6 +275,11 @@ var span = document.getElementsByClassName("close")[0];
 // When the user clicks on the button, open the modal
 addBookBtn.onclick = function() {
   modal.style.display = "block";
+
+
+
+  
+  myLibrary.forEach(book => console.log(book))
 }
 
 // When the user clicks on <span> (x), close the modal
@@ -220,3 +293,4 @@ window.onclick = function(event) {
     modal.style.display = "none";
   }
 }
+
