@@ -1,4 +1,3 @@
-//somehow use the name 'tutu gregorio' in your page thats mad funny
 let addBookBtn = document.querySelector('.addbtn');
 let displayTitle = document.querySelector('.displayTitle');
 let textBox = document.querySelector('.text-box');
@@ -11,16 +10,8 @@ let contentBox = document.querySelector('.afterfunctionbox');
 let totalBox = document.querySelector('.totalBox');
 let totalHeading = document.querySelector('.totalbooks');
 let bookForm = document.querySelector('.bookform');
-
-
-
-
-//NOTES FOR TOMORROW READ ME READ ME READ ME
-//FOR THE PAGES TOGGLE MAYBE ADD AN UP AND DOWN ARROW EVENT LISTENER 
-//PAGES++ PAGES-- 
-//NO. READ MORE ABOUT GETATTRIBUTE/DATASET. DATA HTML JS DOM. 
-
-
+let totalReadHeading = document.querySelector('.readbooks');
+let totalReadHeadingBox = document.querySelector('.totalreadbox');
 
 let myLibrary = [];
 
@@ -31,25 +22,6 @@ function Book(title,author,pages,read){
     this.read = read;    
 }
 
-Book.prototype.info = function(){
-    return `${this.title} by ${this.author}, ${this.pages}, ${this.read}`
-};
-
-Book.prototype.readToggle = function(){
-  let findIndex = '';
-  let splitWord = ''
-  let doneWord = ''
-
-  
-    for(let i = 0; i < myLibrary.length; i++){
-      splitWord = this.textContent.split(' ');
-      doneWord = splitWord[0];
-
-      findIndex = myLibrary.map(function(item){return item.title}).indexOf(doneWord.toString())
-
-    }
-   return findIndex
-}
 
 
 function addBookToLibrary(title, author, pages, read){
@@ -66,6 +38,10 @@ function addBookToLibrary(title, author, pages, read){
 
 function displayBook(){
     let completed = '';
+    let title = '';
+    let author = '';
+    let pages = '';
+    let read = '';
 
         contentBox.style.display="flex";
         let div1 = document.createElement('div');
@@ -74,27 +50,34 @@ function displayBook(){
         div1.style.display = "block"
 
          for(let i = 0; i<myLibrary.length;i++){
-          div1.innerHTML = `Title: ${myLibrary[i].title} <br>
-           Author: ${myLibrary[i].author} <br>
-            Total Pages: ${myLibrary[i].pages} <br>`
+          if(myLibrary[i].read === true){
+            myLibrary[i].read = 'yes'
+          } else {
+            myLibrary[i].read = 'no'
+          }
 
-              if(myLibrary[i].read === true){
+          
+          title = `Title: ${myLibrary[i].title} <br>`
+           author = `Author: ${myLibrary[i].author} <br>`;
+            pages = `Total Pages: ${myLibrary[i].pages} <br>`
+            read = `Read: ${myLibrary[i].read} <br>`;
+
+            div1.innerHTML = title + author + pages + read;
+
+              if(myLibrary[i].read === 'yes'){
                 completed = document.createElement('button');
                 completed.innerHTML = "COMPLETED";
+                completed.className = 'completed';
                 completed.style.color ="green";
                 div1.appendChild(completed);
-             } else if (myLibrary[i].read === false) {
-                completed = document.createElement('button');
-                completed.innerHTML = "INCOMPLETE";
-                completed.style.display ="none";
-             }  
+             }
 
              /* localStorage.setItem(`${myLibrary[i].title} ${myLibrary[i].author} ${myLibrary[i].pages}`, `${myLibrary[i].read}`) */
         } 
     
        let btn = document.createElement('button');
        btn.innerHTML ='Scrap? <i class="fas fa-trash">';
-       btn.style.marginTop = '23px'
+       btn.className = 'scrap'
        div1.appendChild(btn);
         
         
@@ -116,17 +99,20 @@ function displayBook(){
 
              removeIndex = myLibrary.map(function(item){return item.title}).indexOf(doneWord.toString())
 
+             if(myLibrary[i].read === 'yes'){
+              totalReadHeadingBox.innerHTML--;
+            }
           }
           myLibrary.splice(removeIndex, 1);
           totalHeading.style.display="block";
           totalBox.style.display="block";
           totalBox.innerHTML = myLibrary.length;
-          console.log(div1, doneWord, removeIndex)
         })
 
     //read toggle
-     let toggler = document.createElement('button');
-    toggler.innerHTML = 'Toggle Read Status <i class="fas fa-check-square"></i>';
+    let toggler = document.createElement('button');
+    toggler.innerHTML = 'Toggle Status <i class="fas fa-check-square"></i>';
+    toggler.className = 'toggler';
     div1.appendChild(toggler); 
 
         
@@ -150,23 +136,35 @@ function displayBook(){
 
         
       }
-      if(myLibrary[findIndex].read === false){
+      if(myLibrary[findIndex].read === 'no'){
         toggler.style.color="green";
-        toggler.innerHTML = "Completed";
-        myLibrary[findIndex].read = true;
+        toggler.innerHTML = "COMPLETED";
+        myLibrary[findIndex].read = 'yes';
+        div1.innerHTML = `Title: ${myLibrary[findIndex].title} <br>
+                          Author: ${myLibrary[findIndex].author} <br>
+                          Pages : ${myLibrary[findIndex].pages} <br>`
+                          div1.appendChild(toggler); 
+                          div1.appendChild(btn);
+                          totalReadHeadingBox.innerHTML++;
         
-      }else if (myLibrary[findIndex].read === true) {
+      }else if (myLibrary[findIndex].read === 'yes') {
         toggler.style.color="red";
-        toggler.innerHTML = "Not Finished"
-        myLibrary[findIndex].read = false;
+        toggler.innerHTML = "Not Read"
+        myLibrary[findIndex].read = 'no';
         completed.style.display="none";
+        div1.innerHTML = `Title: ${myLibrary[findIndex].title} <br>
+                          Author: ${myLibrary[findIndex].author} <br>
+                          Pages : ${myLibrary[findIndex].pages} <br>`
+                          div1.appendChild(toggler); 
+                          div1.appendChild(btn);
+                          totalReadHeadingBox.innerHTML--;
       }
       console.log(myLibrary[findIndex].read, findIndex, splitWord, doneWord)
     })
 
 }
 
-
+totalReadHeadingBox.innerHTML = 0;
 
 bookSubmit.addEventListener('click', function(e){
  
@@ -181,16 +179,25 @@ bookSubmit.addEventListener('click', function(e){
   totalBox.style.display ="block";
   totalHeading.style.display="block";
   totalBox.innerHTML = myLibrary.length;
+
+  totalReadHeading.style.display = "block";
+  totalReadHeadingBox.style.display = "block";
+
+
+for(let i = 0 ; i < myLibrary.length; i++){
+  if(myLibrary[i].read === 'yes'){
+    totalReadHeadingBox.innerHTML++
+  }
+
+}
   bookForm.reset();
 
 })
 
 
 
-//totalBox.innerHTML = myLibrary.length;
 
-
-//MODAL
+//Modal - got from w3resource
 // Get the modal
 var modal = document.getElementById("myModal");
 
