@@ -22,9 +22,8 @@ if(localStorage.getItem('book') === null){
   myLibrary.push(JSON.parse(localStorage.getItem('book')));
 } 
 
-window.onload = function(){
-if(myLibrary.length !== 0){
 
+function shiftElements(){
   bookIcon.style.gridColumn = '3';
   addBookBtn.style.gridColumn = '3'
 
@@ -34,7 +33,15 @@ if(myLibrary.length !== 0){
 
   totalReadHeading.style.display = "block";
   totalReadHeadingBox.style.display = "block";
+}
 
+
+
+window.onload = function(){
+if(myLibrary.length !== 0){
+
+  shiftElements();
+  displayTitle.style.display = 'none';
   contentBox.style.display="flex";
   let div1 = document.createElement('div');
   
@@ -49,7 +56,10 @@ if(myLibrary.length !== 0){
   div1.classList.add('bookcard');
   div1.style.display = "block";
   bookCardDisplay.appendChild(div1);
-  div1.innerHTML = book.title;
+  div1.innerHTML = `Title: ${book.title}<br>
+                    Author: ${book.author}<br>
+                    Pages: ${book.pages}<br>
+                    Read: ${book.read}`;
  
   
   
@@ -214,30 +224,14 @@ function displayBook(){
 totalReadHeadingBox.innerHTML = 0;
 
 bookSubmit.addEventListener('click', function(e){
-  //if mylibrary has something in it, display that
 
-   /* for(i = 0; i <= myLibrary.length; i++){
-  if(myLibrary.length === 0){
-    myLibrary;
-  } else {
-    displayBook(myLibrary[i])
-  }  
-}  */
  
   addBookToLibrary();
   displayBook();
   modal.style.display="none";
   displayTitle.style.display="none";
 
-  bookIcon.style.gridColumn = '3';
-  addBookBtn.style.gridColumn = '3'
-
-  totalBox.style.display ="block";
-  totalHeading.style.display="block";
-  totalBox.innerHTML = myLibrary.length;
-
-  totalReadHeading.style.display = "block";
-  totalReadHeadingBox.style.display = "block";
+  shiftElements();
 
 
 for(let i = 0 ; i < myLibrary.length; i++){
@@ -247,10 +241,6 @@ for(let i = 0 ; i < myLibrary.length; i++){
 
 }
   bookForm.reset();
-
- 
-
-
 })
 
 
@@ -275,11 +265,6 @@ var span = document.getElementsByClassName("close")[0];
 // When the user clicks on the button, open the modal
 addBookBtn.onclick = function() {
   modal.style.display = "block";
-
-
-
-  
-  myLibrary.forEach(book => console.log(book))
 }
 
 // When the user clicks on <span> (x), close the modal
