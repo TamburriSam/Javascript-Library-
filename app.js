@@ -10,17 +10,11 @@ let contentBox = document.querySelector('.afterfunctionbox');
 let totalBox = document.querySelector('.totalBox');
 let totalHeading = document.querySelector('.totalbooks');
 let bookForm = document.querySelector('.bookform');
-let totalReadHeading = document.querySelector('.readbooks');
-let totalReadHeadingBox = document.querySelector('.totalreadbox');
+
 
 
 let myLibrary = [];
 
-if(localStorage.getItem('book') === null){
-  myLibrary = [];
-}else {
-  myLibrary.push(JSON.parse(localStorage.getItem('book')));
-} 
 
 
 function shiftElements(){
@@ -30,44 +24,8 @@ function shiftElements(){
   totalBox.style.display ="block";
   totalHeading.style.display="block";
   totalBox.innerHTML = myLibrary.length;
-
-  totalReadHeading.style.display = "block";
-  totalReadHeadingBox.style.display = "block";
 }
 
-
-
-window.onload = function(){
-if(myLibrary.length !== 0){
-
-  shiftElements();
-  displayTitle.style.display = 'none';
-  contentBox.style.display="flex";
-  let div1 = document.createElement('div');
-  
-  div1.classList.add('bookcard');
-  div1.style.display = "block";
-
-  
-
-  myLibrary.forEach(function (book){ 
-  let div1 = document.createElement('div')
-  
-  div1.classList.add('bookcard');
-  div1.style.display = "block";
-  bookCardDisplay.appendChild(div1);
-  div1.innerHTML = `Title: ${book.title}<br>
-                    Author: ${book.author}<br>
-                    Pages: ${book.pages}<br>
-                    Read: ${book.read}`;
- 
-  
-  
-})
-}}
-
-
-//window.onload = console.log('hey')
 
 function Book(title,author,pages,read){
     this.title = title;
@@ -97,6 +55,7 @@ function displayBook(){
     let pages = '';
     let read = '';
 
+
         contentBox.style.display="flex";
         let div1 = document.createElement('div');
         
@@ -121,8 +80,6 @@ function displayBook(){
 
             div1.innerHTML = title + author + pages + read;
 
-            //set local storage
-            window.localStorage.setItem(`book${i}`, JSON.stringify(myLibrary[i]));
 
 
               if(myLibrary[i].read === 'yes'){
@@ -158,9 +115,7 @@ function displayBook(){
 
              removeIndex = myLibrary.map(function(item){return item.title}).indexOf(doneWord.toString())
 
-             if(myLibrary[i].read === 'yes'){
-              totalReadHeadingBox.innerHTML--;
-            }
+            
           }
           myLibrary.splice(removeIndex, 1);
           totalHeading.style.display="block";
@@ -195,33 +150,31 @@ function displayBook(){
       }
       if(myLibrary[findIndex].read === 'no'){
         toggler.style.color="green";
-        toggler.innerHTML = "COMPLETED";
+        toggler.innerHTML = "COMPLETE";
         myLibrary[findIndex].read = 'yes';
         div1.innerHTML = `Title: ${myLibrary[findIndex].title} <br>
                           Author: ${myLibrary[findIndex].author} <br>
                           Pages : ${myLibrary[findIndex].pages} <br>`
                           div1.appendChild(toggler); 
                           div1.appendChild(btn);
-                          totalReadHeadingBox.innerHTML++;
+                    
         
       }else if (myLibrary[findIndex].read === 'yes') {
         toggler.style.color="red";
         toggler.innerHTML = "Not Read"
         myLibrary[findIndex].read = 'no';
-        //completed.style.display="none";
         div1.innerHTML = `Title: ${myLibrary[findIndex].title} <br>
                           Author: ${myLibrary[findIndex].author} <br>
                           Pages : ${myLibrary[findIndex].pages} <br>`
                           div1.appendChild(toggler); 
                           div1.appendChild(btn);
-                          totalReadHeadingBox.innerHTML--;
+                       
       }
       console.log(myLibrary[findIndex].read, findIndex, splitWord, doneWord)
     })
 
 }
 
-totalReadHeadingBox.innerHTML = 0;
 
 bookSubmit.addEventListener('click', function(e){
 
@@ -236,23 +189,11 @@ bookSubmit.addEventListener('click', function(e){
 
 for(let i = 0 ; i < myLibrary.length; i++){
   if(myLibrary[i].read === 'yes'){
-    totalReadHeadingBox.innerHTML++
   }
 
 }
   bookForm.reset();
 })
-
-
-//push local storage into myLibrary array
-for(let i = 0; i <= myLibrary.length; i++){
-  if(localStorage.getItem(`book${i}`) === null){
-   myLibrary;
- }else {
-   myLibrary.push(JSON.parse(localStorage.getItem(`book${i}`)));
- }   
-}
-
 
 
 //Modal - got from w3resource
@@ -278,4 +219,3 @@ window.onclick = function(event) {
     modal.style.display = "none";
   }
 }
-
