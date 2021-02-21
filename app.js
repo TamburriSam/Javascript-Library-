@@ -58,31 +58,28 @@ function displayBook(){
 
         contentBox.style.display="flex";
         let div1 = document.createElement('div');
-        
         div1.classList.add('bookcard');
         div1.style.display = "block";
 
       
-
-
          for(let i = 0; i<myLibrary.length;i++){
           if(myLibrary[i].read === true){
-            myLibrary[i].read = 'yes'
+            myLibrary[i].read = 'Yes'
           } else {
-            myLibrary[i].read = 'no'
+            myLibrary[i].read = 'No'
           }
 
-          
-          title = `Title: ${myLibrary[i].title} <br>`
-           author = `Author: ${myLibrary[i].author} <br>`;
-            pages = `Total Pages: ${myLibrary[i].pages} <br>`
-            read = `Read: ${myLibrary[i].read} <br>`;
+        
+          title = `Title: ${myLibrary[i].title} <br>`;
+          author = `Author: ${myLibrary[i].author} <br>`;
+          pages = `Total Pages: ${myLibrary[i].pages} <br>`
+          read = `Read: ${myLibrary[i].read} <br>`;
+          div1.innerHTML = title + author + pages + read;
+            
 
-            div1.innerHTML = title + author + pages + read;
 
 
-
-              if(myLibrary[i].read === 'yes'){
+              if(myLibrary[i].read === 'Yes'){
                 completed = document.createElement('button');
                 completed.innerHTML = "COMPLETED";
                 completed.className = 'completed';
@@ -90,15 +87,13 @@ function displayBook(){
                 div1.appendChild(completed);
              }
         } 
-    
+
+      //create scrap button
        let btn = document.createElement('button');
        btn.innerHTML ='Scrap? <i class="fas fa-trash">';
        btn.className = 'scrap'
        div1.appendChild(btn);
-        
-        
-
-        bookCardDisplay.appendChild(div1);
+       bookCardDisplay.appendChild(div1);
 
        //REMOVE BOOK
         let removeIndex = '';
@@ -108,14 +103,10 @@ function displayBook(){
           for(let i = 0; i < myLibrary.length; i++){
             splitWord = div1.textContent.split(' ');
             doneWord = splitWord[1];
-
-            
-
             div1.style.display="none";
 
              removeIndex = myLibrary.map(function(item){return item.title}).indexOf(doneWord.toString())
-
-            
+       
           }
           myLibrary.splice(removeIndex, 1);
           totalHeading.style.display="block";
@@ -130,11 +121,6 @@ function displayBook(){
     div1.appendChild(toggler); 
 
         
-
-
-
-
-
     toggler.addEventListener('click', function(){
       for(let i = 0; i <= myLibrary.length; i++){
          splitWord = div1.textContent.split(' ');
@@ -143,15 +129,13 @@ function displayBook(){
      
           findIndex = myLibrary.map(function(item){
           joke = item.title.split(' ');
-           return joke[0]}).indexOf(splitWord[1]) 
+          return joke[0]}).indexOf(splitWord[1]) 
  
-
-        
       }
-      if(myLibrary[findIndex].read === 'no'){
+      if(myLibrary[findIndex].read === 'No'){
         toggler.style.color="green";
         toggler.innerHTML = "COMPLETE";
-        myLibrary[findIndex].read = 'yes';
+        myLibrary[findIndex].read = 'Yes';
         div1.innerHTML = `Title: ${myLibrary[findIndex].title} <br>
                           Author: ${myLibrary[findIndex].author} <br>
                           Pages : ${myLibrary[findIndex].pages} <br>`
@@ -159,10 +143,10 @@ function displayBook(){
                           div1.appendChild(btn);
                     
         
-      }else if (myLibrary[findIndex].read === 'yes') {
+      }else if (myLibrary[findIndex].read === 'Yes') {
         toggler.style.color="red";
         toggler.innerHTML = "Not Read"
-        myLibrary[findIndex].read = 'no';
+        myLibrary[findIndex].read = 'No';
         div1.innerHTML = `Title: ${myLibrary[findIndex].title} <br>
                           Author: ${myLibrary[findIndex].author} <br>
                           Pages : ${myLibrary[findIndex].pages} <br>`
@@ -170,26 +154,20 @@ function displayBook(){
                           div1.appendChild(btn);
                        
       }
-      console.log(myLibrary[findIndex].read, findIndex, splitWord, doneWord)
     })
-
 }
 
 
 bookSubmit.addEventListener('click', function(e){
-
- 
   addBookToLibrary();
   displayBook();
   modal.style.display="none";
   displayTitle.style.display="none";
-
   shiftElements();
 
-
-for(let i = 0 ; i < myLibrary.length; i++){
-  if(myLibrary[i].read === 'yes'){
-  }
+    for(let i = 0 ; i < myLibrary.length; i++){
+      if(myLibrary[i].read === 'Yes'){
+    }
 
 }
   bookForm.reset();
@@ -197,23 +175,18 @@ for(let i = 0 ; i < myLibrary.length; i++){
 
 
 //Modal - got from w3resource
-// Get the modal
 var modal = document.getElementById("myModal");
 
-// Get the <span> element that closes the modal
 var span = document.getElementsByClassName("close")[0];
 
-// When the user clicks on the button, open the modal
 addBookBtn.onclick = function() {
   modal.style.display = "block";
 }
 
-// When the user clicks on <span> (x), close the modal
 span.onclick = function() {
   modal.style.display = "none";
 }
 
-// When the user clicks anywhere outside of the modal, close it
 window.onclick = function(event) {
   if (event.target == modal) {
     modal.style.display = "none";
