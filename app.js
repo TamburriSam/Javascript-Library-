@@ -10,8 +10,11 @@ let contentBox = document.querySelector(".afterfunctionbox");
 let totalBox = document.querySelector(".totalBox");
 let totalHeading = document.querySelector(".totalbooks");
 let bookForm = document.querySelector(".bookform");
-
 let myLibrary = [];
+
+
+
+
 
 function shiftElements() {
   bookIcon.style.gridColumn = "3";
@@ -22,13 +25,69 @@ function shiftElements() {
   totalBox.innerHTML = myLibrary.length;
 }
 
-function Book(title, author, pages, read) {
-  this.title = title;
-  this.author = author;
-  this.pages = pages;
-  this.read = read;
+class Book {
+    constructor(title, author, pages, read){
+        this.title = title;
+        this.author = author;
+        this.pages = pages;
+        this.read = read;
+    }
+
+    totalBook () {
+        return this.title
+    }
 }
 
+class Store {
+
+    //use this to get whatever is in local storage
+    static getBooks(){
+        let books;
+        if(localStorage.getItem('books') === null){
+            books = [];
+        }else {
+            books = JSON.parse(localStorage.getItem('books'))
+            shiftElements();
+            displayTitle.style.display = 'none'
+        }
+
+        return books
+    }
+
+
+    static displayBooks() {
+        const books = Store.getBooks();
+     
+
+        books.forEach(function(book){
+
+           //const newBook = new Book(book);
+
+           addToLs(book)
+
+        })
+
+     
+
+   
+
+    }
+
+    static addBook (book) {
+       const books = Store.getBooks();
+
+       books.push(book);
+
+       localStorage.setItem('books', JSON.stringify(books))
+    }
+
+    static removeBook(){
+
+    }
+}
+
+//DOM load event
+document.addEventListener('DOMContentLoaded', Store.displayBooks())
 function addBookToLibrary(title, author, pages, read) {
   title = document.getElementById("title").value;
   author = document.getElementById("author").value;
@@ -36,20 +95,64 @@ function addBookToLibrary(title, author, pages, read) {
   read = document.getElementById("checkbox").checked;
   userInput = new Book(title, author, pages, read);
   myLibrary.push(userInput);
+
+
+
+
   return userInput;
 }
 
-function displayBook() {
-  let completed = "";
-  let title = "";
-  let author = "";
-  let pages = "";
-  let read = "";
+
+ function addToLs(book){
+    let completed = "";
+
+
 
   contentBox.style.display = "flex";
   let div1 = document.createElement("div");
   div1.classList.add("bookcard");
   div1.style.display = "block";
+
+  let title = document.createElement('div');
+  title.classList.add('title');
+  div1.appendChild(title);
+
+
+  bookCardDisplay.appendChild(div1);
+
+
+  title.innerHTML = JSON.stringify(book[book.length-1]).split('"').join(' ').replace(/[^\w\s]/gi, '');
+
+
+} 
+
+
+
+function displayBook(book) {
+  let completed = "";
+
+
+
+  contentBox.style.display = "flex";
+  let div1 = document.createElement("div");
+  div1.classList.add("bookcard");
+  div1.style.display = "block";
+
+  let title = document.createElement('div');
+  title.classList.add('title');
+  div1.appendChild(title);
+
+
+  bookCardDisplay.appendChild(div1);
+
+
+
+
+title.innerHTML = myLibrary[myLibrary.length-1].totalBook();
+
+
+
+
 
   for (let i = 0; i < myLibrary.length; i++) {
     if (myLibrary[i].read === true) {
@@ -58,11 +161,8 @@ function displayBook() {
       myLibrary[i].read = "No";
     }
 
-    title = `Title: ${myLibrary[i].title} <br>`;
-    author = `Author: ${myLibrary[i].author} <br>`;
-    pages = `Total Pages: ${myLibrary[i].pages} <br>`;
-    read = `Read: ${myLibrary[i].read} <br>`;
-    div1.innerHTML = title + author + pages + read;
+
+    div1.appendChild(title)
 
     if (myLibrary[i].read === "Yes") {
       completed = document.createElement("button");
@@ -79,27 +179,31 @@ function displayBook() {
   btn.className = "scrap";
   div1.appendChild(btn);
   bookCardDisplay.appendChild(div1);
+ 
 
   //REMOVE BOOK
   let removeIndex = "";
-  let splitWord = "";
-  let doneWord = "";
   btn.addEventListener("click", function () {
     for (let i = 0; i < myLibrary.length; i++) {
-      splitWord = div1.textContent.split(" ");
-      doneWord = splitWord[1];
+      //splitWord = title.textContent;
       div1.style.display = "none";
+
 
       removeIndex = myLibrary
         .map(function (item) {
           return item.title;
         })
-        .indexOf(doneWord.toString());
+        .indexOf(title.textContent);
     }
+
+
+
     myLibrary.splice(removeIndex, 1);
     totalHeading.style.display = "block";
     totalBox.style.display = "block";
-    totalBox.innerHTML = myLibrary.length;
+    totalBox.innerHTML = myLibrary.length; 
+
+  
   });
 
   //read toggle
@@ -110,16 +214,15 @@ function displayBook() {
 
   toggler.addEventListener("click", function () {
     for (let i = 0; i <= myLibrary.length; i++) {
-      splitWord = div1.textContent.split(" ");
-      doneWord = splitWord[1] + splitWord[2];
+
 
       findIndex = myLibrary
         .map(function (item) {
-          joke = item.title.split(" ");
-          return joke[0];
+          return item.title;
         })
-        .indexOf(splitWord[1]);
+        .indexOf(title.textContent);
     }
+
     if (myLibrary[findIndex].read === "No") {
       toggler.style.color = "green";
       toggler.innerHTML = "COMPLETE";
@@ -145,6 +248,9 @@ function displayBook() {
 bookSubmit.addEventListener("click", function (e) {
   addBookToLibrary();
   displayBook();
+
+  Store.addBook(myLibrary);
+
   modal.style.display = "none";
   displayTitle.style.display = "none";
   shiftElements();
