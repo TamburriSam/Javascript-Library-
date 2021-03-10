@@ -291,3 +291,42 @@
   position:absolute;
   bottom:0;
 }
+
+@media only screen and (max-width: 600px) {
+  .page-header {
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: repeat(3, 1fr);
+  }
+
+  .library-title{
+    grid-row: 1;
+    grid-column: 1/ span 3;
+    width:100vw;
+    height:100px;
+  }
+
+   .book {
+    grid-row: 2;
+    width:100vw;
+    margin-left: 0px;
+    text-align: center;
+
+  } 
+
+  .addbtn {
+
+      grid-row: 3;
+      grid-column: 2 / span 3;
+      width: 100vw;
+  
+}
+
+.displayTitle {
+  width:100vw;
+  text-align: center;
+  position: relative;
+  bottom:100px;
+  grid-row: 3;
+}
+
+}
