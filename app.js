@@ -10,6 +10,7 @@ let contentBox = document.querySelector(".afterfunctionbox");
 let totalBox = document.querySelector(".totalBox");
 let totalHeading = document.querySelector(".totalbooks");
 let bookForm = document.querySelector(".bookform");
+let clearLS = document.querySelector('.clearLS')
 let myLibrary = [];
 
 class Book {
@@ -256,3 +257,7 @@ window.onclick = function (event) {
     modal.style.display = "none";
   }
 };
+
+clearLS.addEventListener('click', function(){
+  localStorage.clear()
+})
