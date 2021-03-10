@@ -282,3 +282,12 @@
 .titleOne {
   color: red;
 }
+
+.clearLS {
+  color:white;
+  font-size: 30px;
+  cursor:pointer;
+  z-index:50;
+  position:absolute;
+  bottom:0;
+}
