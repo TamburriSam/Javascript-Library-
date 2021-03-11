@@ -30,18 +30,38 @@ class Book {
   }
 }
 
+
 class Store {
   //use this to get whatever is in local storage
+
+  static showBook() {
+    const books = Store.getBooks();
+
+    document.addEventListener("DOMContentLoaded", function(){
+      if(localStorage.getItem("books") !== null){
+    
+        myLibrary.push((books))
+        
+      }
+    })
+
+  }
+
+
   static getBooks() {
     let books;
     if (localStorage.getItem("books") === null) {
       books = [];
     } else {
       books = JSON.parse(localStorage.getItem("books"));
+
+
       shiftElements();
       displayTitle.style.display = "none";
-    }
 
+      
+
+    }
     return books;
   }
 
@@ -51,43 +71,24 @@ class Store {
     books.forEach(function (book) {
       addToLs(book);
     });
+ 
   }
 
-  static addBook(book) {
+   static addBook(book) {
     const books = Store.getBooks();
 
     books.push(book);
 
-    localStorage.setItem("books", JSON.stringify(books));
+    let ro = JSON.stringify(myLibrary)
+
+    localStorage.setItem("books", JSON.stringify(myLibrary));
   }
 
-  static removeBook(title) {//ALL FUCKED UP
-   /*  const books = Store.getBooks();
-
-
-    books.forEach(function (book, index) {
-      if (JSON.stringify(book.title) === undefined) {
-        books.splice(this, 1);
-      }
-    });
-    localStorage.setItem("books", JSON.stringify(books)); */
-    const books = Store.getBooks()
-
-    console.log(title)
-    console.log(localStorage.getItem('books').indexOf(title))
-
-    let r = JSON.parse(localStorage.getItem('books'))
-
-    r.forEach(function(book, index){
-      console.log(book)
-      console.log(index)
-    })
-
-
-    console.log(r)
-    
-  }
+ 
 }
+
+Store.showBook();
+
 
 function shiftElements() {
   bookIcon.style.gridColumn = "3";
@@ -111,6 +112,9 @@ function addBookToLibrary(title, author, pages, read) {
   return userInput;
 }
 
+
+
+
 function addToLs(book) {
   contentBox.style.display = "flex";
   let div1 = document.createElement("div");
@@ -122,11 +126,17 @@ function addToLs(book) {
 
   bookCardDisplay.appendChild(div1);
 
-  title.innerHTML = JSON.stringify(book[book.length - 1].title);
+ 
+/*    title.innerHTML = `${JSON.stringify(book[book.length-1].title)}`
   div1.innerHTML = `By: ${JSON.stringify(
     book[book.length - 1].author
   )} <br> Pages: ${JSON.stringify(book[book.length - 1].pages)}<br>`;
-  div1.prepend(title);
+  div1.prepend(title);    */
+
+  //div1.innerHTML==book.title;
+div1.append(book[book.length-1].title)
+console.log(book)
+  
 
   //remove from LS
   let btn = document.createElement("button");
@@ -138,7 +148,11 @@ function addToLs(book) {
   btn.addEventListener("click", function () {
     div1.style.display = "none";
 
-    Store.removeBook(this.parentElement.firstChild.textContent);
+    const books = Store.getBooks();
+
+
+    localStorage.setItem("books", JSON.stringify(myLibrary));
+
   });
 }
 
@@ -195,7 +209,16 @@ function displayBook() {
     totalHeading.style.display = "block";
     totalBox.style.display = "block";
     totalBox.innerHTML = myLibrary.length;
-    Store.removeBook(this.parentElement.firstChild.textContent);
+
+    //HERE
+    //localStorage.setItem("books", JSON.stringify(myLibrary));
+
+    
+    const books = Store.getBooks();
+
+
+    localStorage.setItem("books", JSON.stringify(myLibrary[0]));
+
   });
 
   //read toggle
