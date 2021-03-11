@@ -61,8 +61,8 @@ class Store {
     localStorage.setItem("books", JSON.stringify(books));
   }
 
-  static removeBook(title) {
-    const books = Store.getBooks();
+  static removeBook(title) {//ALL FUCKED UP
+   /*  const books = Store.getBooks();
 
 
     books.forEach(function (book, index) {
@@ -70,7 +70,22 @@ class Store {
         books.splice(this, 1);
       }
     });
-    localStorage.setItem("books", JSON.stringify(books));
+    localStorage.setItem("books", JSON.stringify(books)); */
+    const books = Store.getBooks()
+
+    console.log(title)
+    console.log(localStorage.getItem('books').indexOf(title))
+
+    let r = JSON.parse(localStorage.getItem('books'))
+
+    r.forEach(function(book, index){
+      console.log(book)
+      console.log(index)
+    })
+
+
+    console.log(r)
+    
   }
 }
 
