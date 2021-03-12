@@ -10,15 +10,16 @@ let contentBox = document.querySelector(".afterfunctionbox");
 let totalBox = document.querySelector(".totalBox");
 let totalHeading = document.querySelector(".totalbooks");
 let bookForm = document.querySelector(".bookform");
-let clearLS = document.querySelector('.clearLS')
+let clearLS = document.querySelector(".clearLS");
 let myLibrary = [];
 
 class Book {
-  constructor(title, author, pages, read) {
+  constructor(title, author, pages, read, index) {
     this.title = title;
     this.author = author;
     this.pages = pages;
     this.read = read;
+    this.index = myLibrary.length;
   }
 
   titleBook() {
@@ -26,69 +27,25 @@ class Book {
   }
 
   restOfBook() {
-    return `${this.author}<br>${this.pages}<br>${this.read}<br>`;
+    return `By: ${this.author}<br>${this.pages} Pages<br>${this.read}<br>`;
   }
 }
 
+const persistToLs = () => {
+  localStorage.setItem("library", JSON.stringify(myLibrary));
+};
 
-class Store {
-  //use this to get whatever is in local storage
+var lsItems = JSON.parse(localStorage.getItem("library"));
 
-  static showBook() {
-    const books = Store.getBooks();
-
-    document.addEventListener("DOMContentLoaded", function(){
-      if(localStorage.getItem("books") !== null){
-    
-        myLibrary.push((books))
-        
-      }
-    })
-
-  }
-
-
-  static getBooks() {
-    let books;
-    if (localStorage.getItem("books") === null) {
-      books = [];
-    } else {
-      books = JSON.parse(localStorage.getItem("books"));
-
-
-      shiftElements();
-      displayTitle.style.display = "none";
-
-      
-
-    }
-    return books;
-  }
-
-  static displayBooks() {
-    const books = Store.getBooks();
-
-    books.forEach(function (book) {
-      addToLs(book);
-    });
- 
-  }
-
-   static addBook(book) {
-    const books = Store.getBooks();
-
-    books.push(book);
-
-    let ro = JSON.stringify(myLibrary)
-
-    localStorage.setItem("books", JSON.stringify(myLibrary));
-  }
-
- 
+if (lsItems) {
+  myLibrary = lsItems;
 }
 
-Store.showBook();
-
+function ifPageLoaded() {
+  if (localStorage.getItem("library") !== null) {
+    addToLs();
+  }
+}
 
 function shiftElements() {
   bookIcon.style.gridColumn = "3";
@@ -99,7 +56,7 @@ function shiftElements() {
 }
 
 //DOM load event
-document.addEventListener("DOMContentLoaded", Store.displayBooks());
+document.addEventListener("DOMContentLoaded", ifPageLoaded());
 
 function addBookToLibrary(title, author, pages, read) {
   title = document.getElementById("title").value;
@@ -108,57 +65,60 @@ function addBookToLibrary(title, author, pages, read) {
   read = document.getElementById("checkbox").checked;
   userInput = new Book(title, author, pages, read);
   myLibrary.push(userInput);
+  persistToLs();
 
   return userInput;
 }
 
+function addToLs() {
+  shiftElements();
+  displayTitle.style.display = "none";
 
+  myLibrary.forEach(function (book) {
+    contentBox.style.display = "flex";
+    let div1 = document.createElement("div");
+    div1.classList.add("bookcard");
+    div1.style.display = "flex";
 
+    let title = document.createElement("div");
+    title.classList.add("title");
 
-function addToLs(book) {
-  contentBox.style.display = "flex";
-  let div1 = document.createElement("div");
-  div1.classList.add("bookcard");
-  div1.style.display = "block";
+    bookCardDisplay.appendChild(div1);
 
-  let title = document.createElement("div");
-  title.classList.add("title");
+    title.innerHTML = book.title;
+    div1.innerHTML = `By: ${book.author} <br> ${book.pages} pages`;
+    div1.prepend(title);
 
-  bookCardDisplay.appendChild(div1);
+    //remove from LS
+    let btn = document.createElement("button");
+    btn.innerHTML = 'Scrap? <i class="fas fa-trash">';
+    btn.className = "biggerScrap";
+    div1.appendChild(btn);
+    bookCardDisplay.appendChild(div1);
 
- 
-/*    title.innerHTML = `${JSON.stringify(book[book.length-1].title)}`
-  div1.innerHTML = `By: ${JSON.stringify(
-    book[book.length - 1].author
-  )} <br> Pages: ${JSON.stringify(book[book.length - 1].pages)}<br>`;
-  div1.prepend(title);    */
+    let removeIndex = "";
+    btn.addEventListener("click", function () {
+      for (let i = 0; i < myLibrary.length; i++) {
+        div1.style.display = "none";
 
-  //div1.innerHTML==book.title;
-div1.append(book[book.length-1].title)
-console.log(book)
-  
+        removeIndex = myLibrary
+          .map(function (item) {
+            return item.title;
+          })
+          .indexOf(title.textContent);
+      }
 
-  //remove from LS
-  let btn = document.createElement("button");
-  btn.innerHTML = 'Scrap? <i class="fas fa-trash">';
-  btn.className = "scrap";
-  div1.appendChild(btn);
-  bookCardDisplay.appendChild(div1);
+      myLibrary.splice(removeIndex, 1);
+      totalHeading.style.display = "block";
+      totalBox.style.display = "block";
+      totalBox.innerHTML = myLibrary.length;
 
-  btn.addEventListener("click", function () {
-    div1.style.display = "none";
-
-    const books = Store.getBooks();
-
-
-    localStorage.setItem("books", JSON.stringify(myLibrary));
-
+      persistToLs();
+    });
   });
 }
 
 function displayBook() {
-  let completed = "";
-
   contentBox.style.display = "flex";
   let div1 = document.createElement("div");
   div1.classList.add("bookcard");
@@ -168,8 +128,6 @@ function displayBook() {
   title.classList.add("title");
 
   bookCardDisplay.appendChild(div1);
-
-
 
   for (let i = 0; i < myLibrary.length; i++) {
     if (myLibrary[i].read === true) {
@@ -177,11 +135,9 @@ function displayBook() {
     } else {
       myLibrary[i].read = "Not Completed";
     }
-
   }
 
-  title.innerHTML = myLibrary[myLibrary.length - 1].titleBook();
-
+  title.innerHTML = myLibrary[myLibrary.length - 1].title;
   div1.innerHTML = myLibrary[myLibrary.length - 1].restOfBook();
   div1.prepend(title);
 
@@ -209,16 +165,7 @@ function displayBook() {
     totalHeading.style.display = "block";
     totalBox.style.display = "block";
     totalBox.innerHTML = myLibrary.length;
-
-    //HERE
-    //localStorage.setItem("books", JSON.stringify(myLibrary));
-
-    
-    const books = Store.getBooks();
-
-
-    localStorage.setItem("books", JSON.stringify(myLibrary[0]));
-
+    persistToLs();
   });
 
   //read toggle
@@ -263,8 +210,6 @@ bookSubmit.addEventListener("click", function (e) {
   addBookToLibrary();
   displayBook();
 
-  Store.addBook(myLibrary);
-
   modal.style.display = "none";
   displayTitle.style.display = "none";
   shiftElements();
@@ -296,6 +241,7 @@ window.onclick = function (event) {
   }
 };
 
-clearLS.addEventListener('click', function(){
-  localStorage.clear()
-})
+clearLS.addEventListener("click", function () {
+  localStorage.clear();
+  location.reload();
+});
