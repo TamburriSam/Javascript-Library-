@@ -139,6 +139,7 @@ function displayBook() {
 
   title.innerHTML = myLibrary[myLibrary.length - 1].title;
   div1.innerHTML = myLibrary[myLibrary.length - 1].restOfBook();
+
   div1.prepend(title);
 
   //create scrap button
@@ -205,37 +206,37 @@ function displayBook() {
   });
 }
 
-const formTitle = document.querySelector('#title');
-const formAuthor = document.querySelector('#author');
+const formTitle = document.querySelector("#title");
+const formAuthor = document.querySelector("#author");
 
 //submit button to fire main events
 bookSubmit.addEventListener("click", function (e) {
-  if(formTitle.value !== '' ){
-  addBookToLibrary();
-  displayBook();
+  if (formTitle.value !== "") {
+    addBookToLibrary();
+    displayBook();
 
-  modal.style.display = "none";
-  displayTitle.style.display = "none";
-  shiftElements();
+    modal.style.display = "none";
+    displayTitle.style.display = "none";
+    shiftElements();
 
-  for (let i = 0; i < myLibrary.length; i++) {
-    if (myLibrary[i].read === "Yes") {
+    for (let i = 0; i < myLibrary.length; i++) {
+      if (myLibrary[i].read === "Yes") {
+      }
     }
+
+    bookForm.reset();
+  } else {
+    formTitle.style.borderColor = "red";
+    let point = document.createElement("div");
+    point.innerHTML = "You Must Enter A Name!";
+    point.className = "error";
+    bookForm.prepend(point);
+
+    setTimeout(() => {
+      point.style.display = "none";
+      formTitle.style.borderColor = "white";
+    }, 2000);
   }
-
-  bookForm.reset();
-} else {
-  formTitle.style.borderColor='red';
-  let point = document.createElement('div')
-  point.innerHTML = 'You Must Enter A Name!'
-  point.className = 'error';
-  bookForm.prepend(point)
-
-  setTimeout(() => {
-    point.style.display='none';
-    formTitle.style.borderColor='white';
-  }, 2000);
-}
 });
 
 //Modal
