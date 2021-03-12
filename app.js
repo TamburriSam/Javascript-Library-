@@ -205,8 +205,12 @@ function displayBook() {
   });
 }
 
+const formTitle = document.querySelector('#title');
+const formAuthor = document.querySelector('#author');
+
 //submit button to fire main events
 bookSubmit.addEventListener("click", function (e) {
+  if(formTitle.value !== '' ){
   addBookToLibrary();
   displayBook();
 
@@ -220,6 +224,18 @@ bookSubmit.addEventListener("click", function (e) {
   }
 
   bookForm.reset();
+} else {
+  formTitle.style.borderColor='red';
+  let point = document.createElement('div')
+  point.innerHTML = 'You Must Enter A Name!'
+  point.className = 'error';
+  bookForm.prepend(point)
+
+  setTimeout(() => {
+    point.style.display='none';
+    formTitle.style.borderColor='white';
+  }, 2000);
+}
 });
 
 //Modal
