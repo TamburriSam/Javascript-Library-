@@ -34,7 +34,7 @@
 .displayTitle {
   color: white;
   font-size: 30px;
-  width: 99%;
+  width: 100vw;
   display: block;
   margin: 0 auto;
   z-index: 30;

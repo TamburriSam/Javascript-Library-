@@ -31,6 +31,8 @@ class Book {
   }
 }
 
+
+//local storage
 const persistToLs = () => {
   localStorage.setItem("library", JSON.stringify(myLibrary));
 };
