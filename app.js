@@ -31,7 +31,6 @@ class Book {
   }
 }
 
-
 //local storage
 const persistToLs = () => {
   localStorage.setItem("library", JSON.stringify(myLibrary));
@@ -55,6 +54,13 @@ function shiftElements() {
   totalBox.style.display = "block";
   totalHeading.style.display = "block";
   totalBox.innerHTML = myLibrary.length;
+
+  document.getElementById("main-container").style.position = "absolute";
+  document.getElementById("main-container").style.left = "45px";
+  document.getElementById("main-container").style.width = "10vw";
+
+  document.querySelector(".addbtn").style.position = "absolute";
+  document.querySelector(".addbtn").style.left = "42px";
 }
 
 //DOM load event
@@ -213,10 +219,11 @@ const formAuthor = document.querySelector("#author");
 
 //submit button to fire main events
 bookSubmit.addEventListener("click", function (e) {
+  document.querySelector(".addbtn").style.display = "block";
+
   if (formTitle.value !== "") {
     addBookToLibrary();
     displayBook();
-
     modal.style.display = "none";
     displayTitle.style.display = "none";
     shiftElements();
@@ -247,6 +254,8 @@ var modal = document.getElementById("myModal");
 var span = document.getElementsByClassName("close")[0];
 
 addBookBtn.onclick = function () {
+  document.querySelector(".addbtn").style.display = "none";
+
   modal.style.display = "block";
 };
 

@@ -31,7 +31,7 @@
   z-index: 0;
 }
 
-.displayTitle {
+/* .displayTitle {
   color: white;
   font-size: 30px;
   width: 100vw;
@@ -40,6 +40,32 @@
   z-index: 30;
   grid-row: 8 / span 8;
   grid-column: 8 / span 16;
+} */
+
+.displayTitle {
+  /* margin: auto; */
+  position: absolute;
+  color: white;
+  font-size: 50px;
+  top: 265px;
+}
+
+#btn-container {
+  width: 100vw;
+  z-index: 500;
+  text-align: center;
+  width: 100vw;
+  position: relative;
+  top: 315px;
+}
+
+#main-container {
+  display: flex;
+  width: 100vw;
+  position: absolute;
+  height: 100vh;
+  justify-content: center;
+  align-items: center;
 }
 
 .toggler {
@@ -111,7 +137,7 @@
   color: black;
 }
 
-.book {
+/* .book {
   color: white;
   z-index: 30;
   height: 40px;
@@ -120,7 +146,7 @@
   margin-left: 19px;
   font-size: 90px;
 }
-
+ */
 .addbtn {
   grid-row: 9;
   grid-column: 10 / span 13;
@@ -143,16 +169,16 @@
 }
 
 .library-title {
-  /*eventually, add a welcome based on time next to library like medium.com*/
   font-size: 43px;
+  position: absolute;
   color: black;
   background-color: white;
   width: 240px;
   border-radius: 10px;
   border-right: 1px solid #000;
   z-index: 30;
-  grid-row: 2;
-  grid-column: 2 / span 9;
+  /* grid-row: 2; */
+  /* grid-column: 2 / span 9; */
   padding: 10px;
 }
 
@@ -162,6 +188,9 @@
   height: 700px;
   grid-row: 1 / span 15;
   z-index: 6;
+  position: absolute;
+  right: 10px;
+  top: 23px;
   background-color: var(--purple-accent);
   border: 3px var(--teal-accent) solid;
   border-radius: 40px;
@@ -312,7 +341,8 @@
   cursor: pointer;
   z-index: 50;
   position: absolute;
-  bottom: 0;
+  bottom: 4px;
+  left: 6px;
   background: transparent;
   color: var(--teal-accent);
   border: 2px solid var(--teal-accent);
@@ -337,6 +367,14 @@
   text-align: center;
 }
 
+.book {
+  /* margin: auto; */
+  position: absolute;
+  color: white;
+  font-size: 80px;
+  top: 165px;
+}
+
 .clearDiv {
   grid-column: 2;
   text-align: center;
@@ -347,46 +385,58 @@
   color: red;
 }
 
-@media only screen and (max-width: 600px) {
+@media only screen and (max-width: 990px) {
   .page-header {
     grid-template-columns: repeat(3, 1fr);
     grid-template-rows: repeat(3, 1fr);
   }
 
   .library-title {
-    grid-row: 1;
-    grid-column: 1 / span 3;
+    top: -13px;
+    /* grid-row: 1; */
+    /* grid-column: 1 / span 3; */
     width: 100vw;
     height: 100px;
-    font-size: 60px;
-    margin-top: 20px;
+    position: absolute;
+    font-size: 38px;
+    /* margin-top: 20px; */
     background: transparent;
     color: white;
     text-align: center;
   }
 
   .book {
-    grid-row: 2;
-    width: 100vw;
+    /* grid-row: 2; */
+    /* width: 100vw; */
     margin-left: 0px;
-    position: relative;
-    top: 30px;
+    /* position: relative; */
+    top: -105px;
     z-index: 1;
     text-align: center;
+    margin: auto;
+    position: absolute;
+    color: white;
+    font-size: 80px;
+    top: 160px;
   }
 
   .addbtn {
-    grid-row: 3;
-    grid-column: 2 / span 3;
+    /* grid-row: 3; */
+    /* grid-column: 2 / span 3; */
     width: 100vw;
+    height: 200px;
+    position: absolute;
+    bottom: 0;
+    right: -42px;
   }
 
   .displayTitle {
     width: 100vw;
     text-align: center;
     position: relative;
-    bottom: 100px;
+    bottom: 35px;
     grid-row: 3;
+    top: unset;
   }
 
   .modal-content {
@@ -402,13 +452,27 @@
   .afterfunctionbox {
     width: 100vw;
     grid-row: 2;
+    right: unset;
     grid-column: 3;
     height: 60vh;
-    background-color: #5e009c;
+    background-color: #53b0b0;
   }
 
   .toggler {
     height: 4vh;
+  }
+
+  #btn-container {
+    width: 100vw;
+    z-index: 500;
+    text-align: center;
+    width: 100vw;
+    bottom: 0;
+    left: -42px;
+    /* height: 40px; */
+    position: absolute;
+    bottom: 10px;
+    top: unset;
   }
 
   .bookcard {
